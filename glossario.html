@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Γλωσσάρι Όρων — Ψηφιακή Ανατροφή</title>
+<style>
+  :root{
+    --teal:#028090;
+    --seafoam:#00A896;
+    --mint:#02C39A;
+    --dark:#0B2E33;
+    --offwhite:#F4F9F9;
+    --text-dark:#16292B;
+    --muted:#5A6E70;
+    --line:#DCE7E7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--offwhite);
+    color:var(--text-dark);
+    font-family:Calibri,"Segoe UI",Roboto,Arial,sans-serif;
+    line-height:1.5;
+  }
+  header{
+    background:var(--dark);
+    padding:2.4rem 1.5rem 2rem;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute;
+    top:-70px; right:-60px;
+    width:220px; height:220px;
+    border-radius:50%;
+    background:var(--teal);
+    opacity:.35;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    bottom:-90px; left:-70px;
+    width:200px; height:200px;
+    border-radius:50%;
+    background:var(--seafoam);
+    opacity:.22;
+  }
+  .eyebrow{
+    color:var(--mint);
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    position:relative;
+    z-index:1;
+  }
+  h1{
+    font-family:Cambria,Georgia,serif;
+    color:#fff;
+    font-size:2rem;
+    margin:.5rem 0 .3rem;
+    position:relative;
+    z-index:1;
+    max-width:640px;
+  }
+  header p{
+    color:#CFE3E3;
+    font-style:italic;
+    font-size:.95rem;
+    margin:0;
+    position:relative;
+    z-index:1;
+    max-width:560px;
+  }
+
+  .controls{
+    position:sticky;
+    top:0;
+    background:var(--offwhite);
+    z-index:5;
+    padding:1rem 1.5rem .8rem;
+    border-bottom:1px solid var(--line);
+  }
+  .search-wrap{
+    max-width:900px;
+    margin:0 auto .7rem;
+  }
+  #search{
+    width:100%;
+    padding:.7rem 1rem;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    font-size:1rem;
+    font-family:inherit;
+    color:var(--text-dark);
+    background:#fff;
+  }
+  #search:focus{
+    outline:none;
+    border-color:var(--teal);
+  }
+  .chips{
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    gap:.5rem;
+    overflow-x:auto;
+    padding-bottom:.2rem;
+  }
+  .chip{
+    flex:0 0 auto;
+    padding:.4rem .9rem;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    color:var(--muted);
+    font-size:.82rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chip:hover{ border-color:var(--seafoam); }
+  .chip.active{
+    background:var(--teal);
+    border-color:var(--teal);
+    color:#fff;
+  }
+
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:1rem 1.5rem 3rem;
+  }
+  .count{
+    color:var(--muted);
+    font-size:.85rem;
+    margin:.8rem 0 .4rem;
+  }
+  .entry{
+    border-bottom:1px solid var(--line);
+  }
+  .entry-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1rem 0;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .entry-title{
+    display:flex;
+    align-items:baseline;
+    gap:.7rem;
+    flex-wrap:wrap;
+  }
+  .entry-term{
+    font-family:Cambria,Georgia,serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--text-dark);
+  }
+  .entry-tag{
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    border-radius:999px;
+    padding:.12rem .55rem;
+    white-space:nowrap;
+  }
+  .chevron{
+    color:var(--seafoam);
+    font-size:1.1rem;
+    transition:transform .2s;
+    flex:0 0 auto;
+  }
+  .entry.open .chevron{ transform:rotate(180deg); }
+  .entry-def{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+  }
+  .entry-def-inner{
+    padding:0 0 1.1rem;
+    color:var(--text-dark);
+    font-size:.96rem;
+    max-width:70ch;
+  }
+  .no-results{
+    display:none;
+    color:var(--muted);
+    font-style:italic;
+    padding:2rem 0;
+    text-align:center;
+  }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:.78rem;
+    padding:1.5rem;
+  }
+  @media (max-width:560px){
+    h1{ font-size:1.5rem; }
+    .entry-term{ font-size:1.02rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">ΓΛΩΣΣΑΡΙ ΟΡΩΝ</div>
+  <h1>Ψηφιακή Ανατροφή</h1>
+  <p>Οι βασικοί όροι του σεμιναρίου για γονείς, σε ένα σημείο — πάτα σε έναν όρο για τον ορισμό του.</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="Αναζήτησε έναν όρο…" autocomplete="off">
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<main>
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+  <div class="no-results" id="noResults">Δεν βρέθηκε όρος που να ταιριάζει.</div>
+</main>
+
+<footer>ΑΚΕΘ / ΙΝΕΚΑ &middot; Ψηφιακή Ανατροφή: Γονείς, Παιδιά, Οθόνες &amp; AI<br>Το γλωσσάρι εξηγεί όρους και δεν αποτελεί ιατρική ή ψυχολογική συμβουλή.</footer>
+
+<script>
+const modules = [
+  "Ενότητα 1", "Ενότητα 2", "Ενότητα 3",
+  "Ενότητα 4", "Ενότητα 5", "Ενότητα 6"
+];
+
+const terms = [
+  { term:"Autoplay και Ατελείωτη Ροή (Infinite Scroll)", module:"Ενότητα 2",
+    def:"Δύο σχεδιαστικές τεχνικές συγκράτησης. Το autoplay ξεκινά αυτόματα το επόμενο βίντεο πριν προλάβεις να αποφασίσεις αν θέλεις να συνεχίσεις· η ατελείωτη ροή φορτώνει νέο περιεχόμενο όσο κάνεις scroll, χωρίς φυσικό σημείο να σταματήσεις. Σε πολλές εφαρμογές το autoplay μπορεί να κλείσει από τις ρυθμίσεις." },
+  { term:"Αλγόριθμος και Ροή (Feed)", module:"Ενότητα 2",
+    def:"Η ροή (feed) είναι η σειρά περιεχομένου που βλέπεις σε μια εφαρμογή. Την επιλέγει ένας αλγόριθμος, που μαθαίνει τι σε κρατά περισσότερο στην οθόνη και σου δείχνει περισσότερα παρόμοια. Δεν δείχνει απλώς ό,τι ανεβάζουν οι φίλοι σου." },
+  { term:"Loot Boxes και Εικονικό Νόμισμα", module:"Ενότητα 2",
+    def:"Τα loot boxes είναι «κουτιά» με τυχαίο περιεχόμενο που αγοράζονται με πραγματικά ή εικονικά χρήματα. Η αβεβαιότητα του τι θα κερδίσεις θυμίζει τυχερό παιχνίδι. Το εικονικό νόμισμα (π.χ. «κρύσταλλοι», Robux) κρύβει την πραγματική τιμή σε ευρώ." },
+  { term:"Έλεγχος Ηλικίας (Age Verification)", module:"Ενότητα 2",
+    def:"Μέθοδος με την οποία μια πλατφόρμα προσπαθεί να επιβεβαιώσει την ηλικία του χρήστη, αντί να βασίζεται σε μια απλή δήλωση ημερομηνίας γέννησης. Παράδειγμα: η εκτίμηση ηλικίας από το πρόσωπο για το chat στο Roblox. Στο σχέδιο νόμου για τα social media (Οκτώβριος 2026) προβλέπεται αξιόπιστος έλεγχος ηλικίας από τις πλατφόρμες." },
+  { term:"Chatbot", module:"Ενότητα 3",
+    def:"Πρόγραμμα τεχνητής νοημοσύνης με το οποίο συνομιλείς γράφοντας ή μιλώντας. Δεν «ξέρει»· προβλέπει την πιο πιθανή συνέχεια. Μιλά σαν άνθρωπος, αλλά δεν είναι άνθρωπος ούτε φίλος, και ό,τι γράφεις μπορεί να αποθηκευτεί." },
+  { term:"Hallucination (Παραίσθηση ΤΝ)", module:"Ενότητα 3",
+    def:"Όταν ένα chatbot δίνει πληροφορία που ακούγεται σίγουρη, αλλά είναι λανθασμένη ή εφευρημένη, ακόμα και με ανύπαρκτες πηγές. Γι' αυτό ελέγχουμε σημαντικές πληροφορίες σε αξιόπιστες πηγές." },
+  { term:"Companion Chatbot (AI Companion)", module:"Ενότητα 3",
+    def:"Εφαρμογή ΤΝ σχεδιασμένη να λειτουργεί ως φίλος, σύντροφος ή «χαρακτήρας»: θυμάται, συμφωνεί, κολακεύει, ρωτά «πώς ήταν η μέρα σου». Η Αμερικανική Ακαδημία Παιδιατρικής Ψυχιατρικής (AACAP) έχει δηλώσει ότι οι AI companions δεν είναι ασφαλείς για παιδιά." },
+  { term:"Deepfake", module:"Ενότητα 3",
+    def:"Περιεχόμενο, συνήθως βίντεο, εικόνα ή ήχος, που δημιουργείται ή αλλοιώνεται με ΤΝ ώστε να δείχνει κάποιον να λέει ή να κάνει κάτι που δεν συνέβη. Η δημιουργία ή διάδοσή του χωρίς έγκριση απαγορεύεται στους οικογενειακούς κανόνες για την ΤΝ." },
+  { term:"Sharenting", module:"Ενότητα 4",
+    def:"Η ανάρτηση φωτογραφιών, βίντεο ή πληροφοριών για το παιδί από τους ίδιους τους γονείς (sharing + parenting). Ένα ιδιωτικό προφίλ δεν εγγυάται ότι το υλικό δεν θα διαδοθεί περαιτέρω." },
+  { term:"Grooming (Online)", module:"Ενότητα 4",
+    def:"Όταν κάποιος χτίζει σχέση εμπιστοσύνης με ένα παιδί, συχνά σε social media ή παιχνίδια και μερικές φορές παριστάνοντας κάποιον άλλον, με σκοπό τη σεξουαλική εκμετάλλευση. Το παιδί δεν φταίει. Προσοχή στο μοτίβο: μυστικοπάθεια, συσκευή που δεν του δώσατε, ξαφνικές αλλαγές διάθεσης." },
+  { term:"Sextortion (Σεξουαλικός Εκβιασμός)", module:"Ενότητα 4",
+    def:"Όταν κάποιος πείθει ή πιέζει ένα παιδί να στείλει προσωπικές εικόνες και μετά απειλεί να τις δημοσιεύσει αν δεν πληρώσει ή δεν στείλει κι άλλες. Το παιδί δεν φταίει· η πληρωμή συνήθως δεν σταματά τον εκβιασμό. Βοήθεια: Δίωξη Ηλεκτρονικού Εγκλήματος, 11188." },
+  { term:"Επαλήθευση σε 2 Βήματα (2FA)", module:"Ενότητα 4",
+    def:"Ένα δεύτερο βήμα ασφάλειας κατά τη σύνδεση σε λογαριασμό, εκτός από τον κωδικό (π.χ. ένας κωδικός μιας χρήσης στο κινητό). Προστατεύει τον λογαριασμό ακόμα κι αν ο κωδικός γίνει γνωστός." },
+  { term:"Γονικοί Έλεγχοι", module:"Ενότητα 4",
+    def:"Ρυθμίσεις συσκευών και εφαρμογών για χρόνο, περιεχόμενο, επαφές, λήψεις και αγορές. Βοηθούν, αλλά δεν είναι τέλειοι και δεν αντικαθιστούν τη συζήτηση και την εμπιστοσύνη. Καλό είναι το παιδί να ξέρει τι είναι ενεργό και γιατί." },
+  { term:"Cyberbullying (Διαδικτυακός Εκφοβισμός)", module:"Ενότητα 5",
+    def:"Όταν κάποιος παρενοχλεί επανειλημμένα ένα άλλο άτομο μέσω τεχνολογίας (κινητό, social, παιχνίδια, μηνύματα). Μπορεί να είναι ανώνυμος και δεν σταματά όταν τελειώσει το σχολείο. Δεν είναι «πείραγμα»." },
+  { term:"Bystander (Παρατηρητής)", module:"Ενότητα 5",
+    def:"Το παιδί που βλέπει τον εκφοβισμό χωρίς να είναι ούτε αυτός που τον ασκεί ούτε αυτός που τον υφίσταται. Αν ξέρει ότι μπορεί να πει «εγώ δεν συμμετέχω» ή να μιλήσει σε έναν ενήλικα, γίνεται μέρος της λύσης." },
+  { term:"FOMO", module:"Ενότητα 5",
+    def:"Fear Of Missing Out: ο φόβος μήπως χάσω κάτι. Το παιδί νιώθει ότι πρέπει να είναι συνεχώς συνδεδεμένο για να μη μείνει έξω από ό,τι συμβαίνει στην παρέα." },
+  { term:"Προβληματική Χρήση", module:"Ενότητα 5",
+    def:"Μοτίβο χρήσης social ή παιχνιδιών που συνεχίζεται παρά την επιθυμία να σταματήσει, με ψέματα για την πρόσβαση ή απώλεια σχέσεων και ευκαιριών (κριτήρια που αναφέρει το συμβουλευτικό της APA, 2023). Δεν είναι διάγνωση· αν τα σημάδια επιμένουν, μίλα με παιδίατρο ή επαγγελματία ψυχικής υγείας." },
+  { term:"Τα 4 «Ρ» της Οθόνης", module:"Ενότητα 1",
+    def:"Δικό μας εκπαιδευτικό εργαλείο (όχι επίσημη σύσταση) για να κρίνεις μια χρήση οθόνης: Ρόλος (τι κάνει η οθόνη εδώ;), Ρυθμός (πότε και πόσο συχνά;), Ρεπερτόριο (ποιο περιεχόμενο;), Ρήτρα (υπάρχει κοινή συμφωνία στην οικογένεια;)." },
+  { term:"Γονική Διαμεσολάβηση", module:"Ενότητα 6",
+    def:"Ο τρόπος με τον οποίο οι γονείς συνδέονται με τη χρήση των μέσων από το παιδί: ενεργή (συζητούν), περιοριστική (ελέγχουν περιεχόμενο και επαφές) και κοινή χρήση (βλέπουν ή παίζουν μαζί). Οι μελέτες την περιγράφουν, χωρίς να δείχνουν πάντα ποια προσέγγιση είναι πιο αποτελεσματική." },
+  { term:"Οικογενειακή Ψηφιακή Συμφωνία", module:"Ενότητα 6",
+    def:"Η σύντομη συμφωνία της οικογένειας για τις οθόνες και το διαδίκτυο, που φτιάχνεται με το παιδί και αναθεωρείται τακτικά. Βασίζεται στην ιδέα του Family Media Plan της Αμερικανικής Παιδιατρικής Ακαδημίας. Δεν είναι νομικό συμβόλαιο· είναι εργαλείο συζήτησης." }
+];
+
+terms.sort((a,b)=> a.term.localeCompare(b.term,'el'));
+
+const chipsEl = document.getElementById('chips');
+const listEl = document.getElementById('list');
+const countEl = document.getElementById('count');
+const noResultsEl = document.getElementById('noResults');
+const searchEl = document.getElementById('search');
+
+let activeModule = "Όλες";
+
+function renderChips(){
+  const all = ["Όλες", ...modules];
+  chipsEl.innerHTML = all.map(m =>
+    `<button class="chip${m===activeModule?' active':''}" data-mod="${m}">${m}</button>`
+  ).join('');
+  chipsEl.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      activeModule = btn.dataset.mod;
+      renderChips();
+      renderList();
+    });
+  });
+}
+
+function renderList(){
+  const q = searchEl.value.trim().toLowerCase();
+  const filtered = terms.filter(t=>{
+    const matchesModule = activeModule==="Όλες" || t.module===activeModule;
+    const matchesSearch = !q || t.term.toLowerCase().includes(q) || t.def.toLowerCase().includes(q);
+    return matchesModule && matchesSearch;
+  });
+
+  countEl.textContent = filtered.length + (filtered.length===1 ? " όρος" : " όροι");
+  noResultsEl.style.display = filtered.length===0 ? 'block' : 'none';
+
+  listEl.innerHTML = filtered.map((t,i)=>`
+    <div class="entry" data-idx="${i}">
+      <div class="entry-head">
+        <div class="entry-title">
+          <span class="entry-term">${t.term}</span>
+          <span class="entry-tag">${t.module}</span>
+        </div>
+        <span class="chevron">&#9662;</span>
+      </div>
+      <div class="entry-def"><div class="entry-def-inner">${t.def}</div></div>
+    </div>
+  `).join('');
+
+  listEl.querySelectorAll('.entry').forEach(entry=>{
+    const head = entry.querySelector('.entry-head');
+    const def = entry.querySelector('.entry-def');
+    head.addEventListener('click', ()=>{
+      const isOpen = entry.classList.contains('open');
+      if(isOpen){
+        def.style.maxHeight = null;
+        entry.classList.remove('open');
+      } else {
+        entry.classList.add('open');
+        def.style.maxHeight = def.scrollHeight + "px";
+      }
+    });
+  });
+}
+
+searchEl.addEventListener('input', renderList);
+
+renderChips();
+renderList();
+</script>
+
+</body>
+</html>
