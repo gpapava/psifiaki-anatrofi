@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Οδηγός Οικογένειας — Ψηφιακή Ανατροφή</title>
+<style>
+  :root{
+    --teal:#028090;
+    --seafoam:#00A896;
+    --mint:#02C39A;
+    --dark:#0B2E33;
+    --offwhite:#F4F9F9;
+    --text-dark:#16292B;
+    --muted:#5A6E70;
+    --line:#DCE7E7;
+    --mintbg:#E6F6F2;
+    --amberbg:#FEF4E8;
+    --amber:#F4A259;
+    --purple:#6B4C9A;
+    --purplebg:#F0EBF7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--offwhite);
+    color:var(--text-dark);
+    font-family:Calibri,"Segoe UI",Roboto,Arial,sans-serif;
+    line-height:1.5;
+  }
+  header{
+    background:var(--dark);
+    padding:2.4rem 1.5rem 2rem;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"";
+    position:absolute;
+    top:-70px; right:-60px;
+    width:220px; height:220px;
+    border-radius:50%;
+    background:var(--teal);
+    opacity:.35;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    bottom:-90px; left:-70px;
+    width:200px; height:200px;
+    border-radius:50%;
+    background:var(--seafoam);
+    opacity:.22;
+  }
+  .eyebrow{
+    color:var(--mint);
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    position:relative;
+    z-index:1;
+  }
+  h1{
+    font-family:Cambria,Georgia,serif;
+    color:#fff;
+    font-size:2rem;
+    margin:.5rem 0 .3rem;
+    position:relative;
+    z-index:1;
+    max-width:900px;
+  }
+  header p{
+    color:#CFE3E3;
+    font-style:italic;
+    font-size:.95rem;
+    margin:0;
+    position:relative;
+    z-index:1;
+    max-width:620px;
+  }
+
+  .controls{
+    background:var(--offwhite);
+    padding:1.2rem 1.5rem 1rem;
+    border-bottom:1px solid var(--line);
+  }
+  .controls-inner{ max-width:960px; margin:0 auto; }
+  .step-label{
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:var(--teal);
+    margin:.2rem 0 .5rem;
+  }
+  .step-label span{ color:var(--muted); font-weight:600; letter-spacing:0; margin-left:.4rem; }
+  .ages{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:.7rem;
+    margin-bottom:1.1rem;
+  }
+  .age{
+    background:#fff;
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:.8rem .5rem;
+    text-align:center;
+    cursor:pointer;
+    font-family:inherit;
+    color:var(--text-dark);
+    transition:border-color .15s, background .15s;
+  }
+  .age:hover{ border-color:var(--seafoam); }
+  .age[aria-pressed="true"]{
+    background:var(--mintbg);
+    border-color:var(--teal);
+  }
+  .age .ico{ font-size:1.9rem; display:block; }
+  .age .lbl{ font-family:Cambria,Georgia,serif; font-weight:700; font-size:1.05rem; display:block; margin-top:.15rem; }
+  .age .sub{ font-size:.78rem; color:var(--muted); display:block; }
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+  }
+  .chip{
+    padding:.45rem .95rem;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    color:var(--muted);
+    font-size:.86rem;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chip:hover{ border-color:var(--seafoam); }
+  .chip.active{
+    background:var(--teal);
+    border-color:var(--teal);
+    color:#fff;
+  }
+
+  main{
+    max-width:960px;
+    margin:0 auto;
+    padding:1rem 1.5rem 2rem;
+  }
+  .bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    margin:.4rem 0 .9rem;
+  }
+  .count{ color:var(--muted); font-size:.88rem; }
+  .print{
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:999px;
+    padding:.35rem .9rem;
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--muted);
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .print:hover{ border-color:var(--seafoam); color:var(--teal); }
+  .welcome{
+    background:#fff;
+    border:1px dashed var(--seafoam);
+    border-radius:14px;
+    padding:2rem 1.5rem;
+    text-align:center;
+    color:var(--muted);
+  }
+  .welcome strong{ color:var(--text-dark); font-family:Cambria,Georgia,serif; font-size:1.15rem; display:block; margin-bottom:.3rem; }
+  .grid{ display:grid; gap:1rem; }
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.1rem 1.2rem 1rem;
+    break-inside:avoid;
+  }
+  .card-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.5rem;
+    margin-bottom:.7rem;
+  }
+  .badge{
+    font-size:.74rem;
+    font-weight:700;
+    border-radius:999px;
+    padding:.15rem .6rem;
+    white-space:nowrap;
+  }
+  .badge.agebadge{ background:var(--mintbg); color:#0A6B5A; border:1px solid #BFE6DC; }
+  .badge.topic{ color:var(--teal); border:1px solid var(--teal); }
+  .card h3{
+    font-family:Cambria,Georgia,serif;
+    font-size:1.12rem;
+    margin:0;
+    flex-basis:100%;
+  }
+  .cols{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
+  }
+  .box{
+    border-radius:10px;
+    padding:.75rem .9rem;
+  }
+  .box.watch{ background:var(--amberbg); }
+  .box.do{ background:var(--mintbg); }
+  .box h4{
+    margin:0 0 .35rem;
+    font-size:.78rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .box.watch h4{ color:#9A5B10; }
+  .box.do h4{ color:#0A6B5A; }
+  .box ul{ margin:0; padding-left:1.1rem; font-size:.94rem; }
+  .box li{ margin:.2rem 0; }
+  .say{
+    margin:.8rem 0 0;
+    padding:.6rem .9rem;
+    border-left:4px solid var(--teal);
+    background:var(--offwhite);
+    border-radius:0 8px 8px 0;
+    font-style:italic;
+    font-size:.95rem;
+  }
+  .say b{ font-style:normal; color:var(--teal); font-size:.74rem; letter-spacing:.08em; display:block; text-transform:uppercase; }
+  .week{
+    margin:.7rem 0 0;
+    padding:.6rem .9rem;
+    background:var(--purplebg);
+    border:1px solid #D7CBEA;
+    border-radius:8px;
+    font-size:.92rem;
+    color:#3F2D63;
+  }
+  .week b{ color:var(--purple); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; margin-right:.35rem; }
+  .chapter{
+    margin-top:.8rem;
+    font-size:.88rem;
+    font-weight:600;
+  }
+  .chapter a{ color:var(--teal); text-decoration:none; border-bottom:1.5px solid var(--seafoam); }
+  .chapter a:hover{ color:var(--dark); }
+  .chapter .nolink{ color:var(--muted); }
+
+  .help{
+    margin-top:2rem;
+    background:var(--dark);
+    color:#fff;
+    border-radius:14px;
+    padding:1.3rem 1.4rem;
+  }
+  .help h2{ font-family:Cambria,Georgia,serif; font-size:1.2rem; margin:0 0 .3rem; }
+  .help p{ margin:0 0 .8rem; color:#CFE3E3; font-size:.9rem; }
+  .help ul{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:.4rem 1.2rem; font-size:.92rem; }
+  .help li b{ color:var(--mint); margin-right:.35rem; }
+  .note{
+    margin-top:1.2rem;
+    font-size:.82rem;
+    color:var(--muted);
+    max-width:80ch;
+  }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:.78rem;
+    padding:1.5rem;
+  }
+  @media (max-width:640px){
+    h1{ font-size:1.5rem; }
+    .cols{ grid-template-columns:1fr; }
+    .help ul{ grid-template-columns:1fr; }
+    .age .lbl{ font-size:.92rem; }
+    .age .sub{ display:none; }
+  }
+  @media print{
+    .controls, .print, header::before, header::after{ display:none; }
+    header{ padding:1rem 1.5rem; }
+    body{ background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">ΟΔΗΓΟΣ ΟΙΚΟΓΕΝΕΙΑΣ</div>
+  <h1>Ψηφιακή Ανατροφή: τι να προσέξω και τι να κάνω</h1>
+  <p>Διάλεξε την ηλικία του παιδιού σου και ένα θέμα. Θα δεις συνοπτικά τα βασικά από κάθε ενότητα του σεμιναρίου, με παραπομπή στο αντίστοιχο κεφάλαιο.</p>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="step-label">1 · ΗΛΙΚΙΑ ΠΑΙΔΙΟΥ <span>(μπορείς να διαλέξεις περισσότερες από μία)</span></div>
+    <div class="ages" id="ages"></div>
+    <div class="step-label">2 · ΘΕΜΑ <span>(ή δες όλα)</span></div>
+    <div class="chips" id="topics"></div>
+  </div>
+</div>
+
+<main>
+  <div class="bar">
+    <div class="count" id="count"></div>
+    <button class="print" id="printBtn" type="button">🖨️ Εκτύπωση</button>
+  </div>
+  <div id="results"></div>
+
+  <section class="help" aria-labelledby="helpTitle">
+    <h2 id="helpTitle">Πού ζητώ βοήθεια (Ελλάδα)</h2>
+    <p>Αν ανησυχείς για το παιδί σου ή χρειάζεσαι κάποιον να μιλήσεις, υπάρχουν γραμμές βοήθειας.</p>
+    <ul>
+      <li><b>116111</b> Γραμμή Υποστήριξης Παιδιών, «Το Χαμόγελο του Παιδιού», 24/7</li>
+      <li><b>1056</b> Εθνική Γραμμή SOS, 24/7</li>
+      <li><b>11525</b> «Μαζί για το Παιδί», για γονείς και εκπαιδευτικούς</li>
+      <li><b>11188</b> Δίωξη Ηλεκτρονικού Εγκλήματος</li>
+      <li><b>210 6007686</b> Help-line (help-line.gr), για θέματα διαδικτύου</li>
+      <li><b>1018</b> Γραμμή Παρέμβασης για την Αυτοκτονία, ΚΛΙΜΑΚΑ, 24/7</li>
+      <li><b>112</b> Σε άμεσο κίνδυνο</li>
+    </ul>
+  </section>
+
+  <p class="note">Ο οδηγός συνοψίζει το περιεχόμενο του σεμιναρίου και δεν αποτελεί ιατρική ή ψυχολογική συμβουλή. Δεν κάνει διάγνωση: ένα σημάδι από μόνο του δεν αποδεικνύει κάτι, μετράει το μοτίβο. Αν τα σημάδια επιμένουν ή επηρεάζουν την καθημερινότητα, μίλησε με παιδίατρο ή επαγγελματία ψυχικής υγείας. Επικαιρότητα: έλεγχος 21 Οκτωβρίου 2026 (το νομοσχέδιο για τα social media και οι ρυθμίσεις των εφαρμογών μπορεί να αλλάξουν).</p>
+</main>
+
+<footer>ΑΚΕΘ / ΙΝΕΚΑ &middot; Ψηφιακή Ανατροφή: Γονείς, Παιδιά, Οθόνες &amp; AI</footer>
+
+<script>
+/* ============================================================
+   ΡΥΘΜΙΣΕΙΣ ΣΥΝΔΕΣΜΩΝ ΜΕ ΤΟ MOODLE (συμπλήρωσε μετά το ανέβασμα)
+   1) BOOKS: ο σύνδεσμος του Book κάθε ενότητας (μία γραμμή ανά ενότητα).
+      Μορφή: https://ΔΙΚΟ-ΣΟΥ-MOODLE/mod/book/view.php?id=ΧΧΧ
+   2) CHAPTER_IDS (προαιρετικό): το chapterid ενός κεφαλαίου, για να ανοίγει
+      κατευθείαν στο σωστό κεφάλαιο. Προστίθεται ως &chapterid=ΧΧΧ.
+   Αν δεν συμπληρωθεί τίποτα, ο οδηγός δείχνει το κεφάλαιο ως κείμενο.
+   ============================================================ */
+const BOOKS = {
+  1: "",
+  2: "",
+  3: "",
+  4: "",
+  5: "",
+  6: ""
+};
+const CHAPTER_IDS = {
+  // "4.6": "123",
+};
+
+const ages = [
+  { k:"3-6",   icon:"🧸", label:"3–6 ετών",  sub:"Μικρά παιδιά" },
+  { k:"7-12",  icon:"🎒", label:"7–12 ετών", sub:"Παιδιά" },
+  { k:"13-18", icon:"🎧", label:"13–18 ετών", sub:"Έφηβοι" }
+];
+
+const topics = [
+  { id:1, name:"Οθόνες & Ισορροπία",            unit:"Ενότητα 1" },
+  { id:2, name:"Social Media & Παιχνίδια",       unit:"Ενότητα 2" },
+  { id:3, name:"Τεχνητή Νοημοσύνη",             unit:"Ενότητα 3" },
+  { id:4, name:"Ιδιωτικότητα & Ασφάλεια",       unit:"Ενότητα 4" },
+  { id:5, name:"Εκφοβισμός & Ευεξία",           unit:"Ενότητα 5" },
+  { id:6, name:"Επικοινωνία & Κανόνες",         unit:"Ενότητα 6" }
+];
+
+const cards = {
+  1: {
+    "3-6": { ch:"1.3",
+      watch:["Οθόνη για να «ησυχάσει» ή να φάει το παιδί","Οθόνη πριν τον ύπνο","Περιεχόμενο με διαφημίσεις ή αγορές"],
+      doit:["Βλέπουμε μαζί και μιλάμε για όσα βλέπουμε («Τι έκανε ο ήρωας;»)","Όρια με εικονικό χρονόμετρο ή «κάρτα» που το παιδί καταλαβαίνει","Οθόνες εκτός υπνοδωματίου τη νύχτα"],
+      say:"Η οθόνη κοιμάται τώρα. Αύριο ξυπνάει ξανά.",
+      week:"Επιλέξτε μία «ζώνη χωρίς οθόνη» (π.χ. δείπνο) και μία «ώρα κλεισίματος οθονών» που θα ισχύουν για όλους, γονείς μαζί." },
+    "7-12": { ch:"1.3",
+      watch:["Θυμός όταν σταματά η οθόνη","Λιγότερος ύπνος, παραμέληση μαθημάτων ή φίλων","«Όλοι έχουν!»: συγκρίσεις με τους συμμαθητές"],
+      doit:["Συμφωνήστε κανόνες από κοινού (π.χ. πρώτα μαθήματα και κίνηση, μετά οθόνη) και εξηγήστε το «γιατί»","Συσκευές σε κοινόχρηστο χώρο, όχι στο δωμάτιο","Προσοχή στην εναλλαγή «δημιουργώ, μαθαίνω, παίζω, επικοινωνώ»"],
+      say:"Ποιος κανόνας σου φαίνεται δίκαιος και ποιος όχι; Γιατί;",
+      week:"Επιλέξτε μία «ζώνη χωρίς οθόνη» (π.χ. δείπνο) και μία «ώρα κλεισίματος οθονών» που θα ισχύουν για όλους, γονείς μαζί." },
+    "13-18": { ch:"1.3",
+      watch:["Έντονες αλλαγές διάθεσης ή απομόνωση","Σημαντική πτώση σχολικής επίδοσης ή ύπνου (ξεπερνούν τον «χρόνο οθόνης»)","Απαγορεύσεις χωρίς εξήγηση: συχνά οδηγούν σε κρυφή χρήση"],
+      doit:["Διαπραγμάτευση με όρια, όχι πλήρης ανάκληση της συσκευής","Συμφωνήστε ώρες «ήρεμου» κινητού (γεύμα, μελέτη, νύχτα)","Φόρτιση κινητού εκτός υπνοδωματίου, με παράδειγμα το δικό σου"],
+      say:"Πες μου πώς μπορεί να δουλέψει η νύχτα για εσένα, και θα βρούμε κάτι που να δουλεύει και για τους δύο.",
+      week:"Επιλέξτε μία «ζώνη χωρίς οθόνη» (π.χ. δείπνο) και μία «ώρα κλεισίματος οθονών» που θα ισχύουν για όλους, γονείς μαζί." }
+  },
+  2: {
+    "3-6": { ch:"2.4",
+      watch:["Αυτόματη αναπαραγωγή (autoplay) στα βίντεο","Διαφημίσεις και αγορές εντός εφαρμογής","Chat με αγνώστους στα παιχνίδια"],
+      doit:["Social media: όχι (τα όρια των πλατφορμών ξεκινούν από τα 13)","Βίντεο σε YouTube Kids ή εποπτευόμενο λογαριασμό, με autoplay κλειστό","Παιχνίδια χωρίς chat, διαφημίσεις και αγορές· κάθε νέο παιχνίδι το δοκιμάζουμε πρώτα εμείς","Κοινή οικογενειακή συσκευή, με κωδικό για αγορές"],
+      say:"Θες να μου δείξεις τι έβλεπες;",
+      week:"Ζήτα από το παιδί να σου δείξει ένα παιχνίδι ή μια εφαρμογή που αγαπά. Παίξε ή δες το 15 λεπτά μαζί του και ρώτα: «Τι σου αρέσει εδώ;»" },
+    "7-12": { ch:"2.4",
+      watch:["Οι ομάδες συζήτησης (group chat) των συμμαθητών","Παιχνίδια με chat (Roblox, Fortnite, Minecraft)","Αγορές εντός εφαρμογής και loot boxes"],
+      doit:["Ενεργοποιήστε εποπτεία, περιορίστε το chat στους φίλους και παίξτε μαζί","Ρητός κανόνας: «δεν αγοράζουμε χωρίς να ρωτήσεις», και κωδικός στη συσκευή","Πρώτο κινητό: δες το ως προσθήκη υποχρεώσεων (ώρες, κανόνες, συζήτηση) και ρώτα «για ποιον λόγο το χρειάζεται;»","Για το όριο ηλικίας στα social δες το κεφάλαιο 2.2 (σχέδιο νόμου)"],
+      say:"Δείξε μου τι παίζεις. Τι σου αρέσει σε αυτό;",
+      week:"Ζήτα από το παιδί να σου δείξει ένα παιχνίδι ή μια εφαρμογή που αγαπά. Παίξε ή δες το 15 λεπτά μαζί του και ρώτα: «Τι σου αρέσει εδώ;»" },
+    "13-18": { ch:"2.4",
+      watch:["Κλειστά group chat και ροές που ενισχύουν σύγκριση και αυτοεικόνα","Ο αλγόριθμος που κρατά τον έφηβο στην οθόνη","Το όριο ηλικίας στα social media (σχέδιο νόμου, κεφάλαιο 2.2)"],
+      doit:["Εποπτεία ως διαφάνεια και συμφωνία, όχι ως κρυφός έλεγχος","Ιδιωτικοί λογαριασμοί και έλεγχος για το ποιος μπορεί να στέλνει μηνύματα","Συζητήστε τι προτείνει η εφαρμογή και γιατί, ώστε να γίνει κριτικός χρήστης"],
+      say:"Τι θα άλλαζες στους κανόνες μας; Τι θα κρατούσες;",
+      week:"Ζήτα από το παιδί να σου δείξει ένα παιχνίδι ή μια εφαρμογή που αγαπά. Παίξε ή δες το 15 λεπτά μαζί του και ρώτα: «Τι σου αρέσει εδώ;»" }
+  },
+  3: {
+    "3-6": { ch:"3.4",
+      watch:["Φωνητικοί βοηθοί και «έξυπνα» παιχνίδια: μικρόφωνο και ηχογραφήσεις","Φωτογραφίες ή όνομα του παιδιού σε εργαλεία ΤΝ"],
+      doit:["Όχι άμεση χρήση chatbots (τα εργαλεία ΤΝ έχουν όρια από 13)","Παίζουμε μαζί με δημιουργικό τρόπο: ο γονιός ζητά μια εικόνα ή ιστορία και το παιδί τη σχολιάζει","Έλεγξε τις ρυθμίσεις απορρήτου και πού αποθηκεύονται οι φωνές"],
+      say:"Ο υπολογιστής μιλάει σαν άνθρωπος, αλλά δεν είναι άνθρωπος και δεν νιώθει.",
+      week:"Φτιάξτε μαζί μία ιστορία με ένα εργαλείο ΤΝ και ρωτήστε: «Αυτό είναι αληθινό ή το έφτιαξε ο υπολογιστής;»" },
+    "7-12": { ch:"3.5",
+      watch:["Chatbot που κάνει λάθη ή «επινοεί» πηγές (hallucination)","Βοηθοί ΤΝ μέσα σε εφαρμογές (π.χ. Snapchat My AI)","Σχολικές εργασίες: βοήθεια ή αντιγραφή;"],
+      doit:["Χρήση μαζί με τον γονιό, στον δικό του λογαριασμό (τα περισσότερα όρια ξεκινούν από 13)","«Ρώτα πρώτα εσύ, μετά το chatbot»: εξηγεί και εξασκεί, δεν γράφει την εργασία","Δεν γράφουμε όνομα, σχολείο, διεύθυνση ή φωτογραφίες σε chatbots"],
+      say:"Δείξε μου τι ρώτησες και τι σου απάντησε.",
+      week:"Βρείτε μαζί ένα λάθος του chatbot: ρωτήστε κάτι που ξέρετε ήδη και δείτε αν απαντά σωστά." },
+    "13-18": { ch:"3.6",
+      watch:["Chatbots για συναισθηματική υποστήριξη και companions","Ψεύτικες πηγές ή παράδοση εργασιών που έγραψε το εργαλείο","Deepfakes: ψεύτικες εικόνες, φωνές και βίντεο"],
+      doit:["Γνωρίστε τους κανόνες του σχολείου και μιλήστε για ακεραιότητα","Δεν μοιράζεται ό,τι δεν θα έλεγε σε άγνωστο· μνήμη και ιστορικό κλειστά όπου υπάρχει επιλογή","Ούτε δημιουργία ούτε προώθηση ψεύτικων εικόνων ή βίντεο ανθρώπων","Προσθέστε την ΤΝ στη συμφωνία οθονών της οικογένειας"],
+      say:"Πώς το χρησιμοποιείς; Σε βοηθά; Σε κάνει να νιώθεις καλύτερα ή χειρότερα;",
+      week:"Ρωτήστε τον έφηβο να σας δείξει πώς χρησιμοποιεί ένα chatbot στα μαθήματα, χωρίς κρίση, και συμφωνήστε 2 κανόνες για το σπίτι." }
+  },
+  4: {
+    "3-6": { ch:"4.5",
+      watch:["Φωτογραφίες: όχι γυμνές ή από το μπάνιο· αποφεύγουμε σχολική στολή, σχολείο και τοποθεσία","Τηλέφωνα και βιντεοκλήσεις με αγνώστους"],
+      doit:["Χρήση σε συσκευή και λογαριασμό του γονιού, σε εποπτευόμενο χώρο","Απλά μηνύματα για το «Σώμα μου» και για τα μυστικά που μας κάνουν να νιώθουμε άσχημα","Τηλέφωνα και βιντεοκλήσεις μόνο με γνωστούς ενήλικες και με παρουσία γονιού"],
+      say:"Μπορείς να μου πεις οτιδήποτε.",
+      week:"Παίξτε το «ποιον ρωτάω;»: ρωτήστε «Τι κάνεις αν κάποιος που δεν ξέρεις σε ρωτά το όνομά σου;»" },
+    "7-12": { ch:"4.6",
+      watch:["«Φίλοι» που γνωρίζει μόνο online","Chat στα παιχνίδια, «δώρα» και προσκλήσεις για μετακίνηση σε άλλη εφαρμογή","Κόκκινες σημαίες: κάποιος ζητά μυστικό, φωτογραφία ή σου κάνει υπερβολικά δώρα"],
+      doit:["Κανόνας των 4: δεν δίνουμε όνομα, σχολείο, διεύθυνση, φωτογραφία σε αγνώστους","Κωδικοί μόνο με τους γονείς, όχι σε φίλους","Αν δει κόκκινη σημαία, το λέει αμέσως, χωρίς φόβο τιμωρίας"],
+      say:"Αν κάποιος σου ζητήσει κάτι που σε κάνει να νιώθεις άβολα, δεν θα τιμωρηθείς. Πες μου.",
+      week:"Φτιάξτε μαζί μια κάρτα με «Τα 4 που δεν δίνω» και κρεμάστε την δίπλα στον υπολογιστή." },
+    "13-18": { ch:"4.7",
+      watch:["Γυμνές εικόνες (sexting) και εκβιασμός","Τοποθεσία και live location· ακόλουθοι που δεν γνωρίζει","Απάτες: προσφορές, κλοπή λογαριασμών, ψεύτικοι διαγωνισμοί","Ψηφιακό αποτύπωμα: ό,τι αναρτάται μένει"],
+      doit:["Μίλα γι' αυτά πριν συμβούν: η ευθύνη στον εκβιασμό είναι του εκβιαστή, όχι του παιδιού","Αν γίνει λάθος: πρώτα στήριξη, μετά σχέδιο","Σε εκβιασμό: δεν πληρώνουμε, κρατάμε αποδείξεις, αναφέρουμε στη Δίωξη Ηλεκτρονικού Εγκλήματος (11188)"],
+      say:"Αν ποτέ κάποιος σε πιέσει για εικόνες ή χρήματα, θέλω να μου το πεις πριν κάνεις οτιδήποτε. Δεν θα θυμώσω.",
+      week:"Ρωτήστε τον έφηβο: «Αν έβλεπες κάτι ανησυχητικό online, τι θα έκανες πρώτα;» και συμφωνήστε 2 κανόνες για το τι κάνουμε αν κάτι πάει στραβά." }
+  },
+  5: {
+    "3-6": { ch:"5.5",
+      watch:["Άσχημες λέξεις ή «κακό» περιεχόμενο σε βίντεο και παιχνίδια","Οθόνη πριν τον ύπνο"],
+      doit:["Βοήθησε το παιδί να ονομάζει συναισθήματα («θυμωμένος», «λυπημένος»)","Κανόνας: «Αν κάτι σε στεναχωρήσει στην οθόνη, μου το λες και δεν θα τιμωρηθείς»","Συζητήστε τι βλέπει"],
+      say:"Αν ένας φίλος σε στεναχωρήσει, τι μπορείς να κάνεις;",
+      week:"Παίξτε με κούκλες ή εικόνες το «Αν ένας φίλος σε στεναχωρήσει, τι μπορείς να κάνεις;» και αφήστε το παιδί να βρει απαντήσεις." },
+    "7-12": { ch:"5.6",
+      watch:["Κοροϊδίες σε group chat, αποκλεισμός από παιχνίδι","Προσβλητικά σχόλια στο chat παιχνιδιών","Σύγκριση: οι φωτογραφίες φτιάχνονται"],
+      doit:["Φράση-κλειδί: το παιδί ξέρει ότι μπορεί να σου πει οτιδήποτε χωρίς να χάσει τη συσκευή","Κάρτα «Αν με πειράξουν online»: σταματώ, παίρνω screenshot, μπλοκάρω, το λέω","Μην τιμωρείς το παιδί που δέχτηκε εκφοβισμό"],
+      say:"Θες να μου δείξεις τι έγινε; Δεν θα θυμώσω.",
+      week:"Φτιάξτε μια κάρτα «Αν με πειράξουν online»: Σταματώ, παίρνω screenshot, μπλοκάρω, το λέω." },
+    "13-18": { ch:"5.7",
+      watch:["Εκφοβισμός σε κλειστά group chat ή ανώνυμα προφίλ","Σύγκριση και εμφάνιση στα social, ύπνος","Χρήση παρά την επιθυμία να σταματήσει, ψέματα, απομάκρυνση από φίλους"],
+      doit:["Κράτησε screenshots, μπλόκαρε και αναφέρε· ενημέρωσε το σχολείο (stop-bullying.gov.gr)","Συσκευές εκτός υπνοδωματίου τη νύχτα","Αν τα σημάδια επιμένουν ή επηρεάζουν την καθημερινότητα, μίλα με παιδίατρο ή επαγγελματία ψυχικής υγείας"],
+      say:"Αν ποτέ νιώσεις ότι δεν αντέχεις κάτι, θέλω να το ξέρω. Θα βρούμε μαζί βοήθεια.",
+      week:"Ρωτήστε τον έφηβο: «Τι θα σε βοηθούσε να μου πεις αν κάτι πάει στραβά;» και συμφωνήστε έναν τρόπο." }
+  },
+  6: {
+    "3-6": { ch:"6.3",
+      watch:["Δυσκολία στο κλείσιμο της οθόνης («Άλλο ένα βίντεο!»)","Οθόνες στο τραπέζι","Κάτι που τρόμαξε το παιδί στην οθόνη"],
+      doit:["Προειδοποίηση πριν, μία επιλογή και κάτι ευχάριστο μετά","Σταθερός κανόνας για όλους: στο τραπέζι δεν έχουμε οθόνες","Αν φοβήθηκε: ηρεμία, αγκαλιά, ονόμασε το συναίσθημα"],
+      say:"Διάλεξε: πρώτα το μπάνιο ή πρώτα το βιβλίο;",
+      week:"Φτιάξτε μια εικονογραφημένη ρουτίνα (πρωί, φαγητό, παιχνίδι, οθόνη, ύπνος) και κολλήστε την σε ορατό σημείο." },
+    "7-12": { ch:"6.4",
+      watch:["«Όλοι έχουν κινητό»","Παραβίαση κανόνα ή κρυφό παιχνίδι","Αγορές μέσα στο παιχνίδι"],
+      doit:["Συμφωνήστε λίγους κανόνες μαζί και εξηγήστε το «γιατί»","Συνέπειες συμφωνημένες από πριν· στην παραβίαση, ηρεμία και επαναφορά της εμπιστοσύνης","«Σκάλα αυτονομίας»: περισσότερη ελευθερία όσο δείχνει υπευθυνότητα, με ημερομηνία αναθεώρησης"],
+      say:"Πες μου πώς το βλέπεις και μετά θα πω εγώ τη δική μου ανησυχία.",
+      week:"Φτιάξτε μια «Συμφωνία των 3 κανόνων» (π.χ. τραπέζι, ύπνος, αγορές) και βάλτε ημερομηνία να την ξαναδείτε." },
+    "13-18": { ch:"6.5",
+      watch:["«Μου παραβιάζεις την ιδιωτικότητα»","Κινητό τη νύχτα","Έφηβος που δεν θέλει να μιλήσει","Η ηλικία πρόσβασης στα social (σχέδιο νόμου)"],
+      doit:["Αναγνώρισε το δίκιο του, εξήγησε συγκεκριμένα την ανησυχία σου και συμφωνήστε ρητά τι βλέπεις και τι όχι","Όχι κρυφός έλεγχος: χάνεται η εμπιστοσύνη","Μικρές, ανεπίσημες στιγμές για συζήτηση· μοιράσου πρώτα κάτι δικό σου"],
+      say:"Αν κάτι πάει στραβά online, τι θα ήθελες να κάνω εγώ;",
+      week:"Ζητήστε από τον έφηβο έναν κανόνα που θα άλλαζε και έναν που θα κρατούσε, με εξήγηση." }
+  }
+};
+
+const chapterTitles = {
+  "1.3":"Πρακτικά ανά ηλικία", "2.4":"Ανά ηλικία: τι ταιριάζει σε ποιο παιδί",
+  "3.4":"🧸 Μικρά παιδιά (3–6)", "3.5":"🎒 Παιδιά (7–12)", "3.6":"🎧 Έφηβοι (13–18)",
+  "4.5":"🧸 Μικρά παιδιά (3–6)", "4.6":"🎒 Παιδιά (7–12)", "4.7":"🎧 Έφηβοι (13–18)",
+  "5.5":"🧸 Μικρά παιδιά (3–6)", "5.6":"🎒 Παιδιά (7–12)", "5.7":"🎧 Έφηβοι (13–18)",
+  "6.3":"🧸 Σενάρια συζήτησης (3–6)", "6.4":"🎒 Σενάρια συζήτησης (7–12)", "6.5":"🎧 Σενάρια συζήτησης (13–18)"
+};
+
+const agesEl = document.getElementById('ages');
+const topicsEl = document.getElementById('topics');
+const resultsEl = document.getElementById('results');
+const countEl = document.getElementById('count');
+
+const selectedAges = new Set();
+let selectedTopic = 0; // 0 = όλα
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function chapterHtml(ch, unitNo){
+  const base = BOOKS[unitNo];
+  const title = "Κεφάλαιο " + ch + " · " + (chapterTitles[ch] || "");
+  if(base){
+    const url = base + (CHAPTER_IDS[ch] ? (base.indexOf('?')>-1 ? '&' : '?') + 'chapterid=' + encodeURIComponent(CHAPTER_IDS[ch]) : '');
+    return '<a href="' + esc(url) + '" target="_blank" rel="noopener">📖 ' + esc(title) + '</a>';
+  }
+  return '<span class="nolink">📖 ' + esc(title) + '</span>';
+}
+
+function renderAges(){
+  agesEl.innerHTML = ages.map(a =>
+    '<button type="button" class="age" data-k="' + a.k + '" aria-pressed="' + (selectedAges.has(a.k)?'true':'false') + '">' +
+    '<span class="ico">' + a.icon + '</span><span class="lbl">' + a.label + '</span><span class="sub">' + a.sub + '</span></button>'
+  ).join('');
+  agesEl.querySelectorAll('.age').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.k;
+      if(selectedAges.has(k)) selectedAges.delete(k); else selectedAges.add(k);
+      renderAges(); renderResults();
+    });
+  });
+}
+
+function renderTopics(){
+  const all = [{id:0, name:"Όλα τα θέματα"}, ...topics];
+  topicsEl.innerHTML = all.map(t =>
+    '<button type="button" class="chip' + (t.id===selectedTopic?' active':'') + '" data-id="' + t.id + '">' + t.name + '</button>'
+  ).join('');
+  topicsEl.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      selectedTopic = Number(btn.dataset.id);
+      renderTopics(); renderResults();
+    });
+  });
+}
+
+function renderResults(){
+  if(selectedAges.size===0){
+    countEl.textContent = "";
+    resultsEl.innerHTML = '<div class="welcome"><strong>Διάλεξε πρώτα μια ηλικία</strong>Πάτα 🧸, 🎒 ή 🎧 πιο πάνω. Αν έχεις παιδιά διαφορετικών ηλικιών, διάλεξε περισσότερες από μία.</div>';
+    return;
+  }
+  const list = [];
+  topics.forEach(t=>{
+    if(selectedTopic && t.id!==selectedTopic) return;
+    ages.forEach(a=>{
+      if(!selectedAges.has(a.k)) return;
+      const c = cards[t.id] && cards[t.id][a.k];
+      if(c) list.push({t, a, c});
+    });
+  });
+  countEl.textContent = list.length + (list.length===1 ? " κάρτα" : " κάρτες");
+  resultsEl.innerHTML = '<div class="grid">' + list.map(({t,a,c}) =>
+    '<article class="card">' +
+      '<div class="card-head">' +
+        '<span class="badge agebadge">' + a.icon + ' ' + a.label + '</span>' +
+        '<span class="badge topic">' + t.unit + '</span>' +
+        '<h3>' + esc(t.name) + '</h3>' +
+      '</div>' +
+      '<div class="cols">' +
+        '<div class="box watch"><h4>Τι να προσέξω</h4><ul>' + c.watch.map(x=>'<li>'+esc(x)+'</li>').join('') + '</ul></div>' +
+        '<div class="box do"><h4>Τι να κάνω</h4><ul>' + c.doit.map(x=>'<li>'+esc(x)+'</li>').join('') + '</ul></div>' +
+      '</div>' +
+      '<div class="say"><b>Μια φράση που βοηθά</b>«' + esc(c.say) + '»</div>' +
+      '<div class="week"><b>👨‍👩‍👧 Για την Οικογένεια</b>' + esc(c.week) + '</div>' +
+      '<div class="chapter">' + chapterHtml(c.ch, t.id) + '</div>' +
+    '</article>'
+  ).join('') + '</div>';
+}
+
+document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+
+renderAges();
+renderTopics();
+renderResults();
+</script>
+
+</body>
+</html>
